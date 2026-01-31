@@ -8,42 +8,55 @@
     <link rel="stylesheet" href="style.css" />
     <script defer src="script.js"></script>
   </head>
-  <body data-theme="dark">
-    <header class="container-fluid topbar">
+  <body>
+    <!-- Bandeau haut -->
+    <header class="container-fluid header">
       <div class="grid banner">
-        <!-- Gauche -->
+        <!-- Gauche : logo + titre -->
         <div class="left">
-          <img src="assets/logo_quadrico.png" alt="QuadRico Logo" class="logo" />
-          <hgroup>
+          <img src="logo_quadrico.png" alt="Logo QuadRico" class="logo" />
+          <div>
             <h1>QuadRico</h1>
-            <h2>Générateur de plans opérationnels</h2>
-          </hgroup>
-        </div>
-
-        <!-- Centre -->
-        <div class="center">
-          <button id="fullscreenBtn" title="Plein écran">🖥️</button>
-          <button id="briefingBtn" title="Mode briefing">🎬</button>
-          <div class="dropdown">
-            <button class="contrast" title="Exporter">📤 Export</button>
-            <ul class="menu">
-              <li><a href="#" id="exportPNG">Export PNG</a></li>
-              <li><a href="#" id="exportPDF">Export PDF</a></li>
-              <li><a href="#" id="exportGRID">Grille seule</a></li>
-              <li><a href="#" id="print">Imprimer</a></li>
-              <li><a href="#" id="mailConcepteur">Mail Concepteur</a></li>
-              <li><a href="#" id="whatsapp">WhatsApp</a></li>
-              <li><a href="#" id="exportJSON">Export Scénario (.json)</a></li>
-            </ul>
+            <small>Générateur de quadrillage tactique</small>
           </div>
         </div>
 
-        <!-- Droite -->
-        <div class="right">
-          <button id="darkModeToggle" title="Mode sombre/clair">🌙</button>
-          <button id="helpBtn" title="Aide">❓</button>
+        <!-- Centre : icônes -->
+        <div class="center icons">
+          <button title="Mode sombre" id="toggleTheme">🌗</button>
+          <button title="Plein écran" onclick="toggleFullscreen()">⛶</button>
+          <button title="Mode Briefing">🎬</button>
+          <button title="Exporter / Imprimer">📤</button>
+          <button title="Aide">❓</button>
+          <button title="Contact concepteur" onclick="openContactForm()">✉️</button>
         </div>
+
+        <!-- Droite : réservé à de futurs menus -->
+        <div class="right"></div>
       </div>
     </header>
+
+    <!-- Message de bienvenue -->
+    <dialog id="welcomeModal">
+      <article>
+        <header>
+          <h3>QuadRico – Démarrage rapide</h3>
+          <button aria-label="Fermer" onclick="closeModal()"></button>
+        </header>
+        <p>
+          1. Charge une image ou coche Grille sans image.<br />
+          2. Règle le nombre de colonnes / lignes.<br />
+          3. Choisis ton type de quadrillage puis clique sur APPLIQUER (ou touche Entrée).<br />
+          4. Clique sur les cases pour :
+          <ul>
+            <li>ajouter bordure / texte / zone colorée,</li>
+            <li>effacer bordure ou texte,</li>
+            <li>fusionner / fractionner / réinitialiser une case.</li>
+          </ul>
+          <strong>Raccourcis :</strong> Entrée, Ctrl+Z, Ctrl+C/V, Ctrl+molette, Suppr<br />
+          Utilise 📤 pour exporter ou clique sur ❓ pour plus d’aide.
+        </p>
+      </article>
+    </dialog>
   </body>
 </html>
