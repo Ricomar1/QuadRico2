@@ -3,13 +3,21 @@ const ctx = canvas.getContext("2d");
 
 const imageInput = document.getElementById("imageInput");
 const loadImageBtn = document.getElementById("loadImageBtn");
+const exportBtn = document.getElementById("exportBtn");
+const resetGridBtn = document.getElementById("resetGridBtn");
+const generateGridBtn = document.getElementById("generateGridBtn");
 
 let bgImage = null;
 let grid = [];
 let rows = 10;
 let cols = 10;
 
-// === FONCTIONS DE BASE ===
+let opacityImage = 100;
+let opacityGrid = 100;
+let opacityCode = 100;
+let opacityZone = 100;
+
+// Créer la grille initiale
 function createGrid(r, c) {
   rows = r;
   cols = c;
@@ -41,23 +49,23 @@ function createGrid(r, c) {
   drawAll();
 }
 
+// Dessine tout sur le canvas
 function drawAll() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (bgImage) {
     ctx.globalAlpha = opacityImage / 100;
     ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-    ctx.globalAlpha = 1;
   }
 
-  drawZones();
-  drawGridLines();
-  drawCodes();
-  drawTexts();
-  drawSelections();
-}
+  ctx.globalAlpha = opacityZone / 100;
+  grid.flat().forEach(cell => {
+    if (cell.fillColor) {
+      ctx.fillStyle = cell.fillColor;
+      ctx.fillRect(cell.x, cell.y, cell.w, cell.h);
+    }
+  });
 
-function drawGridLines() {
   ctx.globalAlpha = opacityGrid / 100;
   ctx.strokeStyle = "#000";
   ctx.lineWidth = 1;
@@ -78,24 +86,12 @@ function drawGridLines() {
     ctx.stroke();
   }
 
-  ctx.globalAlpha = 1;
-}
-
-function drawZones() {
-  ctx.globalAlpha = opacityZone / 100;
-  grid.flat().forEach(cell => {
-    if (cell.fillColor) {
-      ctx.fillStyle = cell.fillColor;
-      ctx.fillRect(cell.x, cell.y, cell.w, cell.h);
-    }
-  });
-  ctx.globalAlpha = 1;
-}
-
-function drawCodes() {
   ctx.globalAlpha = opacityCode / 100;
 
   grid.flat().forEach(cell => {
+    const cx = cell.x + cell.w / 2;
+    const cy = cell.y + cell.h / 2;
+
     ctx.lineWidth =
       cell.thickness === "bold"
         ? 2
@@ -103,10 +99,7 @@ function drawCodes() {
         ? 4
         : 1;
 
-    ctx.strokeStyle = cell.borderColor || "black";
-
-    const cx = cell.x + cell.w / 2;
-    const cy = cell.y + cell.h / 2;
+    ctx.strokeStyle = cell.borderColor || "#000";
 
     if (cell.codeType === "diagonal") {
       ctx.beginPath();
@@ -135,10 +128,6 @@ function drawCodes() {
     }
   });
 
-  ctx.globalAlpha = 1;
-}
-
-function drawTexts() {
   grid.flat().forEach(cell => {
     if (cell.text) {
       ctx.fillStyle =
@@ -151,23 +140,8 @@ function drawTexts() {
       ctx.fillText(
         cell.text,
         cell.x + cell.w / 2,
-        cell.y + cell.h / 2
-      );
-    }
-  });
-}
-
-function drawSelections() {
-  grid.flat().forEach(cell => {
-    if (cell.selected) {
-      ctx.strokeStyle = "cyan";
-      ctx.lineWidth = 2;
-      ctx.strokeRect(cell.x, cell.y, cell.w, cell.h);
-    }
-  });
-}
-
-// === INTERACTIONS ===
+        cell.y + cell.
+// Clic sur le canvas pour sélectionner les cases
 canvas.addEventListener("click", e => {
   const rect = canvas.getBoundingClientRect();
   const mouseX = e.clientX - rect.left;
@@ -187,7 +161,7 @@ canvas.addEventListener("click", e => {
   drawAll();
 });
 
-// === IMAGE ===
+// Image de fond
 loadImageBtn.addEventListener("click", () => {
   imageInput.click();
 });
@@ -203,9 +177,29 @@ imageInput.addEventListener("change", e => {
   img.src = URL.createObjectURL(file);
 });
 
-// === BOUTONS ===
+// Générer une nouvelle grille
+generateGridBtn.addEventListener("click", () => {
+  const r = parseInt(document.getElementById("rowsInput").value);
+  const c = parseInt(document.getElementById("colsInput").value);
+  createGrid(r, c);
+});
+
+// Réinitialiser la grille
+resetGridBtn.addEventListener("click", () => {
+  createGrid(rows, cols);
+});
+
+// Export PNG
+exportBtn.addEventListener("click", () => {
+  const link = document.createElement("a");
+  link.download = "quadrico_export.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+});
+
+// Appliquer les modifications aux cases sélectionnées
 document.getElementById("applyBtn").addEventListener("click", () => {
-  const code = document.querySelector("input[name='codeType']:checked").value;
+  const code = document.getElementById("codeType").value;
   const borderColor = document.getElementById("borderColorSelect").value;
   const fillColor = document.getElementById("zoneColorSelect").value;
   const thickness = document.getElementById("lineThickness").value;
@@ -229,6 +223,7 @@ document.getElementById("applyBtn").addEventListener("click", () => {
   drawAll();
 });
 
+// Effacer bordure
 document.getElementById("clearBorderBtn").addEventListener("click", () => {
   grid.flat().forEach(cell => {
     if (cell.selected) {
@@ -238,26 +233,35 @@ document.getElementById("clearBorderBtn").addEventListener("click", () => {
   drawAll();
 });
 
+// Effacer texte/code
 document.getElementById("clearTextBtn").addEventListener("click", () => {
   grid.flat().forEach(cell => {
     if (cell.selected) {
-      cell.text = "";
       cell.codeType = "none";
+      cell.text = "";
     }
   });
   drawAll();
 });
 
-document.getElementById("resetGridBtn").addEventListener("click", () => {
-  const r = +document.getElementById("rowsInput").value;
-  const c = +document.getElementById("colsInput").value;
-  createGrid(r, c);
-});
+// Sliders d’opacité
+function setupOpacitySlider(id, varName) {
+  const slider = document.getElementById(id);
+  const valueLabel = document.getElementById(id + "Value");
 
-document.getElementById("themeToggle").addEventListener("click", () => {
-  document.documentElement.classList.toggle("light-theme");
-});
+  slider.addEventListener("input", () => {
+    window[varName] = parseInt(slider.value);
+    valueLabel.textContent = slider.value + "%";
+    drawAll();
+  });
+}
 
+setupOpacitySlider("opacityImage", "opacityImage");
+setupOpacitySlider("opacityGrid", "opacityGrid");
+setupOpacitySlider("opacityCode", "opacityCode");
+setupOpacitySlider("opacityZone", "opacityZone");
+
+// Préparer l’email
 document.getElementById("sendEmailBtn").addEventListener("click", () => {
   const to = document.getElementById("emailTo").value;
   const subject = document.getElementById("emailSubject").value;
@@ -277,27 +281,5 @@ document.getElementById("sendEmailBtn").addEventListener("click", () => {
   }
 });
 
-// === SLIDERS ===
-let opacityImage = 100;
-let opacityGrid = 100;
-let opacityCode = 100;
-let opacityZone = 100;
-
-function setupOpacitySlider(id, targetVar) {
-  const slider = document.getElementById(id);
-  const label = document.getElementById(id + "Value");
-
-  slider.addEventListener("input", () => {
-    window[targetVar] = +slider.value;
-    label.textContent = slider.value + "%";
-    drawAll();
-  });
-}
-
-setupOpacitySlider("opacityImage", "opacityImage");
-setupOpacitySlider("opacityGrid", "opacityGrid");
-setupOpacitySlider("opacityCode", "opacityCode");
-setupOpacitySlider("opacityZone", "opacityZone");
-
-// === INITIALISATION ===
-createGrid(10, 10);
+// Initialisation
+createGrid(rows, cols);
