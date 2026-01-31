@@ -1,120 +1,119 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QuadRico</title>
-
-  <!-- Feuille de style -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Barre du haut -->
-  <div class="top-bar">
-    <button id="themeToggle">🎨 Thème</button>
+  <!-- Interface principale -->
+  <div id="top-bar">
     <button id="loadImageBtn">🖼 Charger une image</button>
     <input type="file" id="imageInput" style="display: none" />
-    <button id="exportPNG">📸 Export PNG</button>
-    <button id="exportPDF">📄 Export PDF</button>
-  </div>
-
-  <!-- Paramètres grille -->
-  <div class="settings-panel">
-    <fieldset>
-      <legend>Grille</legend>
-      <label>Lignes : <input type="number" id="rowsInput" value="10" min="1" /></label>
-      <label>Colonnes : <input type="number" id="colsInput" value="10" min="1" /></label>
-    </fieldset>
-    <fieldset>
-      <legend>Codes</legend>
-      <label><input type="radio" name="codeType" value="none" checked /> Aucun</label>
-      <label><input type="radio" name="codeType" value="diagonal" /> Diagonale</label>
-      <label><input type="radio" name="codeType" value="dots" /> Pointillés</label>
-      <label><input type="radio" name="codeType" value="cross" /> Croix noire</label>
-      <label><input type="radio" name="codeType" value="cross-red" /> Croix rouge</label>
-      <label><input type="radio" name="codeType" value="cross-fsi" /> Croix FSI</label>
-    </fieldset>
-    <fieldset>
-      <legend>Style</legend>
-      <label>Épaisseur :
-        <select id="lineThickness">
-          <option value="normal">Normal</option>
-          <option value="bold">Épais</option>
-          <option value="extra-bold">Très épais</option>
-        </select>
-      </label>
-      <label>Couleur bordure :
-        <select id="borderColorSelect">
-          <option value="">(Aucune)</option>
-          <option value="black">Noir</option>
-          <option value="white">Blanc</option>
-          <option value="red">Rouge</option>
-          <option value="blue">Bleu</option>
-          <option value="green">Vert</option>
-          <option value="yellow">Jaune</option>
-          <option value="orange">Orange</option>
-          <option value="purple">Violet</option>
-        </select>
-      </label>
-      <label>Couleur zone :
-        <select id="zoneColorSelect">
-          <option value="">(Aucune)</option>
-          <option value="white">Blanc</option>
-          <option value="red">Rouge</option>
-          <option value="blue">Bleu</option>
-          <option value="green">Vert</option>
-          <option value="yellow">Jaune</option>
-          <option value="orange">Orange</option>
-          <option value="purple">Violet</option>
-          <option value="gray">Gris</option>
-        </select>
-      </label>
-    </fieldset>
-    <fieldset>
-      <legend>Texte</legend>
-      <label>Contenu : <input type="text" id="cellTextInput" /></label>
-      <label><input type="checkbox" id="sameTextColor" checked /> Même couleur que bordure</label>
-      <label>Sinon : 
-        <select id="textColorSelect">
-          <option value="black">Noir</option>
-          <option value="white">Blanc</option>
-          <option value="red">Rouge</option>
-          <option value="blue">Bleu</option>
-          <option value="green">Vert</option>
-          <option value="yellow">Jaune</option>
-          <option value="orange">Orange</option>
-          <option value="purple">Violet</option>
-        </select>
-      </label>
-    </fieldset>
-  </div>
-
-  <!-- Outils -->
-  <div class="tools-bar">
-    <button id="applyBtn">✎ Appliquer</button>
-    <button id="clearBorderBtn">⬚ Effacer bordure</button>
-    <button id="clearTextBtn">✕ Effacer texte/code</button>
-    <button id="mergeBtn">▩ Fusionner</button>
-    <button id="splitBtn">▢ Fractionner</button>
+    <button id="exportBtn">📤 Export PNG</button>
     <button id="resetGridBtn">⭮ Réinitialiser</button>
   </div>
 
-  <!-- Sliders d'opacité -->
-  <div class="opacity-panel">
+  <div id="settings">
+    <label for="rowsInput">Lignes :</label>
+    <input type="number" id="rowsInput" value="10" min="1" />
+
+    <label for="colsInput">Colonnes :</label>
+    <input type="number" id="colsInput" value="10" min="1" />
+
+    <button id="generateGridBtn">Générer Grille</button>
+  </div>
+
+  <div id="canvas-container">
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </div>
+
+  <div id="tools">
+    <label>Code :
+      <select id="codeType">
+        <option value="none">Aucun</option>
+        <option value="diagonal">Diagonale</option>
+        <option value="dots">Pointillés</option>
+        <option value="cross">Croix noire</option>
+        <option value="cross-red">Croix rouge</option>
+        <option value="cross-fsi">Croix FSI</option>
+      </select>
+    </label>
+
+    <label>Épaisseur :
+      <select id="lineThickness">
+        <option value="normal">Normal</option>
+        <option value="bold">Épais</option>
+        <option value="extra-bold">Très épais</option>
+      </select>
+    </label>
+
+    <label>Couleur bordure :
+      <select id="borderColorSelect">
+        <option value="">(Aucune)</option>
+        <option value="black">Noir</option>
+        <option value="white">Blanc</option>
+        <option value="red">Rouge</option>
+        <option value="green">Vert</option>
+        <option value="blue">Bleu</option>
+        <option value="yellow">Jaune</option>
+        <option value="orange">Orange</option>
+        <option value="purple">Violet</option>
+      </select>
+    </label>
+
+    <label>Zone colorée :
+      <select id="zoneColorSelect">
+        <option value="">(Aucune)</option>
+        <option value="white">Blanc</option>
+        <option value="red">Rouge</option>
+        <option value="green">Vert</option>
+        <option value="blue">Bleu</option>
+        <option value="yellow">Jaune</option>
+        <option value="orange">Orange</option>
+        <option value="purple">Violet</option>
+        <option value="gray">Gris</option>
+      </select>
+    </label>
+
+    <label>Texte :
+      <input type="text" id="cellTextInput" />
+    </label>
+
+    <label><input type="checkbox" id="sameTextColor" checked /> Même que bordure</label>
+
+    <label>Couleur texte :
+      <select id="textColorSelect">
+        <option value="black">Noir</option>
+        <option value="white">Blanc</option>
+        <option value="red">Rouge</option>
+        <option value="blue">Bleu</option>
+        <option value="green">Vert</option>
+        <option value="yellow">Jaune</option>
+        <option value="orange">Orange</option>
+        <option value="purple">Violet</option>
+      </select>
+    </label>
+
+    <div class="tools-btns">
+      <button id="applyBtn">✎ Appliquer</button>
+      <button id="clearBorderBtn">⬚ Effacer bordure</button>
+      <button id="clearTextBtn">✕ Effacer texte/code</button>
+      <button id="mergeBtn">▩ Fusionner</button>
+      <button id="splitBtn">▢ Fractionner</button>
+    </div>
+  </div>
+
+  <div id="opacity-controls">
     <label>Image : <input type="range" id="opacityImage" min="0" max="100" value="100" /> <span id="opacityImageValue">100%</span></label>
     <label>Grille : <input type="range" id="opacityGrid" min="0" max="100" value="100" /> <span id="opacityGridValue">100%</span></label>
     <label>Codes : <input type="range" id="opacityCode" min="0" max="100" value="100" /> <span id="opacityCodeValue">100%</span></label>
     <label>Zones : <input type="range" id="opacityZone" min="0" max="100" value="100" /> <span id="opacityZoneValue">100%</span></label>
   </div>
 
-  <!-- Canvas -->
-  <div class="canvas-container">
-    <canvas id="canvas" width="800" height="600"></canvas>
-  </div>
-
-  <!-- Email -->
-  <div class="email-panel">
+  <div id="email-panel">
     <h3>📧 Préparer un mail</h3>
     <label>Destinataire : <input type="email" id="emailTo" /></label>
     <label>Objet : <input type="text" id="emailSubject" /></label>
@@ -122,7 +121,6 @@
     <button id="sendEmailBtn">✉️ Ouvrir messagerie</button>
   </div>
 
-  <!-- Script principal -->
   <script src="script.js"></script>
 </body>
 </html>
