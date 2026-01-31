@@ -1,78 +1,57 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #111;
-  color: #f0f0f0;
+  padding: 0;
 }
 
-#top-bar,
-#settings,
-#tools,
-#opacity-controls,
-#email-panel {
-  padding: 10px 16px;
-  border-bottom: 1px solid #333;
-  background-color: #1a1a1a;
+.topbar {
+  background-color: #121212;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.banner {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
   align-items: center;
+  justify-content: space-between;
 }
 
-#canvas-container {
+.left, .center, .right {
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: #000;
-  padding: 16px;
+  gap: 1rem;
 }
 
-canvas {
-  border: 2px solid #444;
-  background-color: #fff;
-  max-width: 100%;
-  height: auto;
+.left .logo {
+  height: 48px;
+  margin-right: 1rem;
 }
 
-select,
-input[type="number"],
-input[type="text"],
-input[type="email"],
-textarea {
-  background-color: #222;
-  border: 1px solid #555;
+.center .dropdown {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  display: none;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  z-index: 10;
+}
+
+.menu li {
+  list-style: none;
+  padding: 0.5rem 1rem;
+}
+
+.menu li a {
   color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
+  text-decoration: none;
 }
 
-button {
-  background-color: #2d2d2d;
-  border: 1px solid #555;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-button:hover {
-  background-color: #444;
-}
-
-label {
-  font-size: 14px;
-}
-
-.tools-btns {
+.dropdown:hover .menu {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
 }
-
-input[type="range"] {
-  width: 120px;
-}
-
-#opacity-controls label {
-  display: flex;
