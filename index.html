@@ -4,59 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>QuadRico</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" />
     <link rel="stylesheet" href="style.css" />
     <script defer src="script.js"></script>
   </head>
   <body>
-    <!-- Bandeau haut -->
-    <header class="container-fluid header">
-      <div class="grid banner">
-        <!-- Gauche : logo + titre -->
-        <div class="left">
-          <img src="logo_quadrico.png" alt="Logo QuadRico" class="logo" />
-          <div>
-            <h1>QuadRico</h1>
-            <small>Générateur de quadrillage tactique</small>
-          </div>
-        </div>
 
-        <!-- Centre : icônes -->
-        <div class="center icons">
-          <button title="Mode sombre" id="toggleTheme">🌗</button>
-          <button title="Plein écran" onclick="toggleFullscreen()">⛶</button>
-          <button title="Mode Briefing">🎬</button>
-          <button title="Exporter / Imprimer">📤</button>
-          <button title="Aide">❓</button>
-          <button title="Contact concepteur" onclick="openContactForm()">✉️</button>
+    <header class="topbar">
+      <div class="logo-title">
+        <div class="logo"></div>
+        <div class="title">
+          <h1>QuadRico</h1>
+          <p>Générateur de quadrillage tactique</p>
         </div>
+      </div>
 
-        <!-- Droite : réservé à de futurs menus -->
-        <div class="right"></div>
+      <div class="toolbar">
+        <button title="Mode sombre" id="toggleTheme">🌗</button>
+        <button title="Plein écran" onclick="toggleFullscreen()">⛶</button>
+        <button title="Mode Briefing">🎬</button>
+        <button title="Exporter">📤</button>
+        <button title="Aide">❓</button>
+        <button title="Contact">✉️</button>
       </div>
     </header>
 
-    <!-- Message de bienvenue -->
-    <dialog id="welcomeModal">
-      <article>
-        <header>
-          <h3>QuadRico – Démarrage rapide</h3>
-          <button aria-label="Fermer" onclick="closeModal()"></button>
-        </header>
-        <p>
-          1. Charge une image ou coche Grille sans image.<br />
-          2. Règle le nombre de colonnes / lignes.<br />
-          3. Choisis ton type de quadrillage puis clique sur APPLIQUER (ou touche Entrée).<br />
-          4. Clique sur les cases pour :
-          <ul>
-            <li>ajouter bordure / texte / zone colorée,</li>
-            <li>effacer bordure ou texte,</li>
-            <li>fusionner / fractionner / réinitialiser une case.</li>
-          </ul>
-          <strong>Raccourcis :</strong> Entrée, Ctrl+Z, Ctrl+C/V, Ctrl+molette, Suppr<br />
-          Utilise 📤 pour exporter ou clique sur ❓ pour plus d’aide.
-        </p>
-      </article>
-    </dialog>
+    <!-- Le reste du site s’affichera ici -->
+
   </body>
 </html>
