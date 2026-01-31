@@ -1,57 +1,68 @@
+/* Design général */
 body {
+  margin: 0;
   background-color: #0d1117;
   color: #ffffff;
+  font-family: "Segoe UI", sans-serif;
 }
 
-.header {
-  background-color: #161b22;
-  padding: 1rem;
-}
-
-.banner {
+/* Bandeau */
+.topbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background-color: #161b22;
+  border-bottom: 1px solid #30363d;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.left {
+/* Logo + Titre */
+.logo-title {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
 .logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f2d94e 50%, #579dff 50%),
+              linear-gradient(0deg, #5dd97d 50%, #ef6363 50%);
+  background-blend-mode: normal;
 }
 
-.center.icons {
+.title h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.title p {
+  font-size: 0.75rem;
+  margin: 0;
+  color: #aaa;
+}
+
+/* Icônes */
+.toolbar {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 0.75rem;
 }
 
-.center.icons button {
-  background-color: transparent;
+.toolbar button {
+  background-color: #21262d;
+  color: #fff;
   border: 1px solid #444;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  font-size: 1.1rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 1.1rem;
+  transition: background-color 0.2s;
 }
 
-.center.icons button:hover {
+.toolbar button:hover {
   background-color: #30363d;
-}
-
-dialog {
-  max-width: 600px;
-}
-
-dialog[open]::backdrop {
-  background: rgba(0, 0, 0, 0.7);
 }
